@@ -114,13 +114,150 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        int s = board.size();
+        int[][] boardCopy = new int[s][s];
+        boardClone(boardCopy,board);
+        switch (side) {
+            case EAST:
+                board.setViewingPerspective(Side.EAST);
+                break;
+            case WEST:
+                board.setViewingPerspective(Side.WEST);
+                break;
+            case SOUTH:
+                board.setViewingPerspective(Side.SOUTH);
+                break;
+            case NORTH:
+                board.setViewingPerspective(Side.NORTH);
+                break;
+            default:
+                System.out.println("Error");
+                System.out.println(side);
+        }
+        for (int i = 0; i < s; i++) {
+            boolean isEmpty = true;
+            for (int j = s - 1; j >= 0; j --) {
+                if (board.tile(i,j) != null) {
+                    isEmpty = false;
+                    break;
+                }
+            }
+            if (isEmpty) {
+                continue;
+            }
+
+            int pin0 = seekFirst(i);
+
+            while (true) {
+                if (isEnd(i,pin0)) {
+                    break ;
+                }
+                for (int j = pin0 - 1; j >= 0; j--) {
+                    if (board.tile(i,j) != null){
+                        if (board.tile(i,j).value() == board.tile(i,pin0).value()) {
+                            Tile t = board.tile(i,j);
+                            board.move(i,pin0,t);
+                            score += board.tile(i,pin0).value();
+                            if (isEnd(i,pin0)) {
+                                break;
+                            } else {
+                                pin0 = seekNext(i, pin0);
+                                break;
+                            }
+                        } else {
+                            pin0 = seekNext(i, pin0);
+                            break;
+                        }
+                    }
+                }
+            }
+            collating(i);
+        }
+        board.setViewingPerspective(Side.NORTH);
+        changed = checkChange(boardCopy,board);
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
-    }
 
+    }
+    private void boardClone(int[][] m, Board b) {
+        int s = b.size();
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < s; j++) {
+                if (b.tile(i,j) != null) {
+                    m[i][j] = b.tile(i,j).value();
+                } else {
+                    m[i][j] = 0;
+                }
+
+            }
+        }
+    }
+    private boolean checkChange(int[][] m, Board b) {
+        int s = board.size();
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < s; j++) {
+                if (b.tile(i,j) == null) {
+                    if (m[i][j] != 0) {
+                        return true;
+                    }
+                } else {
+                    if (b.tile(i,j).value() != m[i][j]) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    private boolean isEnd(int i, int start) {
+        for(int j = start - 1; j >= 0; j--) {
+            if (board.tile(i,j) != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private int seekNext(int i, int start) {
+        int next = 0;
+        for(int j = start - 1; j >= 0; j--) {
+            if (board.tile(i,j) != null) {
+                next = j;
+                break;
+            }
+        }
+        return next;
+    }
+    private int seekFirst(int i) {
+        int first = 0;
+        int s = board.size();
+        for(int j = s - 1; j >= 0; j--) {
+            if (board.tile(i,j) != null) {
+                first = j;
+                break;
+            }
+        }
+        return first;
+    }
+    private void collating(int i) {
+        int s = board.size();
+        if (board.tile(i,s-1) == null){
+            board.move(i,s-1,board.tile(i,seekFirst(i)));
+        }
+        int firstIndex = s - 1;
+        while (true) {
+            if (firstIndex == 0) {
+                break;
+            }
+            if (isEnd(i,firstIndex)) {
+                break;
+            }
+            board.move(i,firstIndex - 1,board.tile(i,seekNext(i,firstIndex)));
+            firstIndex --;
+        }
+    }
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
      */
@@ -138,6 +275,14 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        int s = b.size();
+        for (int i = 0;i < s;i++) {
+            for (int j = 0;j < s;j++) {
+                if (b.tile(i,j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +293,14 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        int s = b.size();
+        for (int i = 0;i < s;i++) {
+            for (int j = 0;j < s;j++) {
+                if ((b.tile(i,j) != null) && (b.tile(i,j).value() == MAX_PIECE)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -159,6 +312,24 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+        int s = b.size();
+        for (int i = 0; i < s - 1; i++) {
+            for (int j = 0 ; j < s; j++) {
+                if (b.tile(i,j).value() == b.tile(i+1,j).value()) {
+                    return true;
+                }
+            }
+        }
+        for (int i = 0; i < s; i++) {
+            for (int j = 0 ; j < s - 1; j++) {
+                if (b.tile(i,j).value() == b.tile(i,j+1).value()) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

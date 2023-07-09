@@ -10,13 +10,14 @@ public class IntListExercises {
      *
      * @param lst IntList from Lecture
      */
+
+
     public static void addConstant(IntList lst, int c) {
         lst.first += c;
         if (lst.rest != null) {
             addConstant(lst.rest,c);
         }
     }
-
 
     /**
      * Part B: Buggy method that sets node.first to zero if

@@ -1,4 +1,5 @@
 package deque;
+import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T> {
     private T[] items;
@@ -142,5 +143,44 @@ public class ArrayDeque<T> implements Deque<T> {
         }
         return items[pointer];
     }
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
 
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int wizPos;
+
+        public ArrayDequeIterator() {
+            wizPos = pointerForward(nextFirst);
+        }
+
+        public boolean hasNext() {
+            return wizPos != pointerBackward(nextLast);
+        }
+
+        public T next() {
+            T returnItem = items[wizPos];
+            wizPos = pointerForward(wizPos);
+            return returnItem;
+        }
+    }
+    public boolean equals(Object o) {
+        if (o instanceof Deque) {
+            if (this.size != ((Deque<?>) o).size()) {
+                return false;
+            }
+            Iterator<T> seerA = this.iterator();
+            Iterator<T> seerB = ((Deque<T>) o).iterator();
+            while (seerA.hasNext()) {
+                T AItem = seerA.next();
+                T BItem = seerB.next();
+                if (AItem != BItem) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

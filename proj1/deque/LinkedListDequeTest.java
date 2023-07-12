@@ -8,6 +8,38 @@ import static org.junit.Assert.*;
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
     @Test
+    public void equalsATestEqual() {
+        Deque<Integer> L = new LinkedListDeque<>();
+        Deque<Integer> A = new ArrayDeque<>();
+        int N1 = 100;
+        for (int i = 0; i < N1; i++) {
+            int randVal = StdRandom.uniform(0,100);
+            int operationNumber = StdRandom.uniform(0, 2);
+            if (operationNumber == 0) {
+                L.addLast(randVal);
+                A.addLast(randVal);
+            } else if (operationNumber == 1) {
+                L.addFirst(randVal);
+                A.addFirst(randVal);
+            }
+            assertEquals(L.size(),A.size());
+        }
+        boolean AEqualsL = A.equals(L);
+        boolean LEqualsA = L.equals(A);
+        assertTrue(AEqualsL);
+        assertTrue(LEqualsA);
+        L.removeFirst();
+        AEqualsL = A.equals(L);
+        LEqualsA = L.equals(A);
+        assertFalse(AEqualsL);
+        assertFalse(LEqualsA);
+        L.addFirst(999);
+        AEqualsL = A.equals(L);
+        LEqualsA = L.equals(A);
+        assertFalse(AEqualsL);
+        assertFalse(LEqualsA);
+    }
+    @Test
     public void addResizeTest2() {
         Deque<Integer> A = new ArrayDeque<>();
         int N1 = 7;

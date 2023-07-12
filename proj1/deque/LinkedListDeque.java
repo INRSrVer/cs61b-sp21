@@ -113,8 +113,9 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
             if (this.size != ((Deque<?>) o).size()) {
                 return false;
             }
+            Deque<T> o1 = (Deque<T>) o;
             Iterator<T> seerA = this.iterator();
-            Iterator<T> seerB = ((Deque<T>) o).iterator();
+            Iterator<T> seerB = o1.iterator();
             while (seerA.hasNext()) {
                 T AItem = seerA.next();
                 T BItem = seerB.next();

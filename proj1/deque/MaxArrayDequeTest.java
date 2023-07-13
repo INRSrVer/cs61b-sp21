@@ -1,12 +1,11 @@
 package deque;
 
-
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.Comparator;
 public class MaxArrayDequeTest {
     private static class IntComparator implements Comparator<Integer> {
-        public int compare(Integer num1,Integer num2) {
+        public int compare(Integer num1, Integer num2) {
             return num1 - num2;
         }
     }

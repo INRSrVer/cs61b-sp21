@@ -1,11 +1,10 @@
 package deque;
 
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.Comparator;
 import java.util.Iterator;
 
-public class MaxArrayDeque<T> extends ArrayDeque<T>{
+public class MaxArrayDeque<T> extends ArrayDeque<T> {
     private final Comparator<T> comparator;
     public MaxArrayDeque(Comparator<T> c) {
         comparator = c;
@@ -18,7 +17,7 @@ public class MaxArrayDeque<T> extends ArrayDeque<T>{
         Iterator<T> seerA = super.iterator();
         while (seerA.hasNext()) {
             T nextItem = seerA.next();
-            if (c.compare(nextItem,maxItem) > 0) {
+            if (c.compare(nextItem, maxItem) > 0) {
                 maxItem = nextItem;
             }
         }

@@ -36,7 +36,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             nextFirst = cap - 1;
         } else {
             System.arraycopy(items, 0, a, 0, lastOne + 1);
-            System.arraycopy(items, firstOne, a, firstOne + size, cap - lastOne -1);
+            System.arraycopy(items, firstOne, a, firstOne + size, cap - lastOne - 1);
             items = a;
             cap *= 2;
             nextFirst = size + nextFirst;
@@ -59,8 +59,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         items = a;
         cap /= 2;
     }
-
-    ;
 
     private int pointerBackward(int i) {
         if (i == 0) {
@@ -164,6 +162,25 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return returnItem;
         }
     }
+
+    public boolean equals(Object o) {
+        if (o instanceof Deque) {
+            if (this.size != ((Deque<?>) o).size()) {
+                return false;
+            }
+            Deque<T> o1 = (Deque<T>) o;
+            for (int i = 0; i < this.size(); i++) {
+                if (o1.get(i) != this.get(i)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //the following part is OK in the local test but unable to compile in the AutoGrader
+    /*
     public boolean equals(Object o) {
         if (o instanceof Deque) {
             if (this.size != ((Deque<?>) o).size()) {
@@ -184,4 +201,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return false;
         }
     }
+    */
+
 }

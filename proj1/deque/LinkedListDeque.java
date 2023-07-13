@@ -2,13 +2,13 @@ package deque;
 
 import java.util.Iterator;
 
-public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
-    private DNode sentinel;
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
+    private final DNode sentinel;
     private int size;
     private class DNode {
-        public T item;
-        public DNode prev;
-        public DNode next;
+        private final T item;
+        private DNode prev;
+        private DNode next;
         public DNode(T i, DNode p, DNode n) {
             item = i;
             prev = p;
@@ -16,25 +16,25 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         }
     }
     public LinkedListDeque() {
-        sentinel = new DNode(null,null,null);
+        sentinel = new DNode(null, null, null);
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
         size = 0;
     }
     public LinkedListDeque(T item) {
-        sentinel = new DNode(null,null,null);
-        sentinel.next = new DNode(item,sentinel,sentinel);
+        sentinel = new DNode(null, null, null);
+        sentinel.next = new DNode(item, sentinel, sentinel);
         sentinel.prev = sentinel.next;
         size = 1;
     }
     public void addFirst(T item) {
-        DNode temp = new DNode(item,sentinel,sentinel.next);
+        DNode temp = new DNode(item, sentinel, sentinel.next);
         sentinel.next.prev = temp;
         sentinel.next = temp;
         size += 1;
     }
     public void addLast(T item) {
-        DNode temp = new DNode(item,sentinel.prev,sentinel);
+        DNode temp = new DNode(item, sentinel.prev, sentinel);
         sentinel.prev.next = temp;
         sentinel.prev = temp;
         size += 1;
@@ -76,7 +76,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         return item;
     }
     public T get(int index) {
-        if ((this.isEmpty()) || (index >= size)){
+        if ((this.isEmpty()) || (index >= size)) {
             return null;
         }
         DNode temp = sentinel.next;
@@ -94,7 +94,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
     private class LinkedListDequeIterator implements Iterator<T> {
         private DNode wizPos;
 
-        public LinkedListDequeIterator() {
+        LinkedListDequeIterator() {
             wizPos = sentinel.next;
         }
 
@@ -108,6 +108,24 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
             return returnItem;
         }
     }
+    public boolean equals(Object o) {
+        if (o instanceof Deque) {
+            if (this.size != ((Deque<?>) o).size()) {
+                return false;
+            }
+            Deque<T> o1 = (Deque<T>) o;
+            for (int i = 0; i < this.size(); i++) {
+                if (o1.get(i) != this.get(i)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //the following part is OK in the local test but unable to compile in the AutoGrader
+    /*
     public boolean equals(Object o) {
         if (o instanceof Deque) {
             if (this.size != ((Deque<?>) o).size()) {
@@ -128,4 +146,5 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
             return false;
         }
     }
+     */
 }

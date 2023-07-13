@@ -9,7 +9,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         private final T item;
         private DNode prev;
         private DNode next;
-        public DNode(T i, DNode p, DNode n) {
+        DNode(T i, DNode p, DNode n) {
             item = i;
             prev = p;
             next = n;
@@ -21,12 +21,14 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         sentinel.prev = sentinel;
         size = 0;
     }
+    /*
     public LinkedListDeque(T item) {
         sentinel = new DNode(null, null, null);
         sentinel.next = new DNode(item, sentinel, sentinel);
         sentinel.prev = sentinel.next;
         size = 1;
     }
+     */
     public void addFirst(T item) {
         DNode temp = new DNode(item, sentinel, sentinel.next);
         sentinel.next.prev = temp;
@@ -131,7 +133,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return getRecursiveHelper(index, sentinel.next);
     }
 
-    public T getRecursiveHelper(int index, DNode pointer) {
+    private T getRecursiveHelper(int index, DNode pointer) {
         if (index == 0) {
             return pointer.item;
         }

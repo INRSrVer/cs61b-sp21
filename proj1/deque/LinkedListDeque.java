@@ -76,7 +76,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return item;
     }
     public T get(int index) {
-        if ((this.isEmpty()) || (index >= size)) {
+        if ((this.isEmpty()) || (index >= size) || (index < 0)) {
             return null;
         }
         DNode temp = sentinel.next;
@@ -123,6 +123,19 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         } else {
             return false;
         }
+    }
+    public T getRecursive(int index) {
+        if ((this.isEmpty()) || (index >= size) || (index < 0)) {
+            return null;
+        }
+        return getRecursiveHelper(index, sentinel.next);
+    }
+
+    public T getRecursiveHelper(int index, DNode pointer) {
+        if (index == 0) {
+            return pointer.item;
+        }
+        return getRecursiveHelper(index - 1, pointer.next);
     }
     //the following part is OK in the local test but unable to compile in the AutoGrader
     /*

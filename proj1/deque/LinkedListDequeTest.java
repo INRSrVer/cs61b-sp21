@@ -2,11 +2,28 @@ package deque;
 
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
+import java.util.Iterator;
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
+    @Test
+    public void iteratorTest4AD() {
+        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
+
+        for (int i = 0; i < 70; i++) {
+            arrayDeque.addLast(i);
+        }
+
+        int index = 0;
+        for (int item : arrayDeque) {
+            assertEquals(index, item);
+            index += 1;
+        }
+    }
     @Test
     public void equalsATestEqual() {
         Deque<Integer> L = new LinkedListDeque<>();
@@ -137,8 +154,42 @@ public class LinkedListDequeTest {
             }
         }
     }
-
-
+    @Test
+    public void getLinkedListTest() {
+        LinkedListDeque<Integer> L = new LinkedListDeque<>();
+        for (int i = 0; i < 10; i++) {
+            L.addLast(i);
+        }
+        int index = 0;
+        for (int i = 0; i < 10; i++) {
+            int L1 = L.getRecursive(i);
+            int L2 = L.get(i);
+            assertEquals(i, L1);
+            assertEquals(i, L2);
+        }
+    }
+    @Test
+    public void hasNextArrayDequeTest() {
+        ArrayDeque<Integer> A = new ArrayDeque<>();
+        for (int i = 0; i < 20; i++) {
+            A.addLast(i);
+        }
+        Iterator<Integer> seerA = A.iterator();
+        for (int i = 0; i < 19; i++) {
+           boolean shouldHasNext = seerA.hasNext();
+           seerA.next();
+           assertTrue(shouldHasNext);
+        }
+        boolean shouldNotHasNext = seerA.hasNext();
+        assertFalse(shouldNotHasNext);
+    }
+    @Test
+    public void hasNextArrayEmptyDequeTest() {
+        ArrayDeque<Integer> A = new ArrayDeque<>();
+        Iterator<Integer> seerA = A.iterator();
+        boolean shouldNotHasNext = seerA.hasNext();
+        assertFalse(shouldNotHasNext);
+    }
     @Test
     public void randomizedTest() {
         Deque<Integer> L = new LinkedListDeque<>();

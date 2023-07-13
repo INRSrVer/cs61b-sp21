@@ -131,7 +131,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public T get(int index) {
-        if (isEmpty()) {
+        if (isEmpty() ) {
             return null;
         }
         int pointer = pointerForward(nextFirst);
@@ -153,9 +153,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
 
         public boolean hasNext() {
-            return wizPos != pointerBackward(nextLast);
+            if (isEmpty()) {
+                return false;
+            } else {
+                return wizPos != pointerBackward(nextLast);
+            }
         }
-
         public T next() {
             T returnItem = items[wizPos];
             wizPos = pointerForward(wizPos);

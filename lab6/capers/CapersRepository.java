@@ -32,16 +32,8 @@ public class CapersRepository {
      *    - story -- file containing the current story
      */
     public static void setupPersistence() {
-        if (CAPERS_FOLDER.mkdir()) {
-            System.out.println("successfully made .capers folder");
-        } else {
-            System.out.println("already have a .capers folder");
-        }
-        if (Dog.DOG_FOLDER.mkdir()) {
-            System.out.println("successfully made dogs folder");
-        } else {
-            System.out.println("already have a dogs folder");
-        }
+        CAPERS_FOLDER.mkdir();
+        Dog.DOG_FOLDER.mkdir();
     }
 
     /**
